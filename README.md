@@ -1,36 +1,45 @@
 # Dog Trainer — Setup
 
-## 1. Start the relay server
+## What it does
+Hold a hand gesture in front of the webcam and the Roblox dog performs a trick:
+- ☝️ Finger → Sit
+- ✋ Open palm → Shake
+- ✊ Fist → Jump
+
+## Files
+- `server.js` — relay server between the webcam page and Roblox
+- `public/index.html` + `public/app.js` — webcam classifier (Teachable Machine model)
+- `roblox_server.lua` — paste into a Script in ServerScriptService
+
+## Setup
+
+### 1. Start the relay server (in Codespaces)
 ```
-cd dog-trainer
 npm install
 node server.js
 ```
-Open http://localhost:3000 in your browser — you'll see the webcam console.
 
-## 2. Expose it to Roblox via ngrok
+### 2. Start ngrok (in a second Codespaces terminal)
 ```
 ngrok http 3000
 ```
-Copy the `https://xxxx.ngrok-free.app` URL it gives you.
+Copy the `https://xxxx.ngrok-free.app` URL.
 
-## 3. Seed the model (webcam page)
-Hold each gesture in front of the camera and click the matching button ~5 times each:
-- ☝️ Finger → SIT
-- ✋ Open palm → SHAKE
-- ✊ Fist → JUMP
+### 3. Paste the ngrok URL into roblox_server.lua
+```lua
+local BASE_URL = "https://xxxx.ngrok-free.app"
+```
 
-## 4. Set up Roblox
-1. File → Experience Settings → Security → **Allow HTTP requests**
-2. Create a `RemoteEvent` named **DogTrainer** in `ReplicatedStorage`
-3. Paste **roblox_server.lua** into a `Script` in `ServerScriptService`
-4. Paste **roblox_client.lua** into a `LocalScript` in `StarterPlayerScripts`
-5. In `roblox_server.lua` line 9 — replace `YOUR-NGROK-URL` with the one from step 2
-6. In `roblox_server.lua`, find the `playTrick(trick)` function and plug in your dog's animations
+### 4. Open the webcam page
+Open the ngrok URL in your browser — the classifier starts automatically.
 
-## How the live-learning loop works
-- Webcam page classifies the gesture every 500ms → pushes result to relay
-- Roblox polls relay, dog performs the trick, judgment buttons appear
-- Kid taps the correct trick → relay notified → webcam page grabs the buffered
-  embedding for that frame and adds it to the classifier under the correct label
-- The dog gets smarter as the session goes on; every treat = a confirmed training example
+### 5. Set up Roblox Studio
+1. File → Game Settings → Security → **Allow HTTP Requests** on
+2. Paste `roblox_server.lua` into a **Script** in `ServerScriptService`
+3. Make sure your dog model in Workspace is named **Dog**
+4. Hit **Play**
+
+## Notes
+- The webcam page must be open and running for the dog to react
+- Confidence threshold is 0.7 — gestures need to be clear and held steady
+- ngrok URL changes every time you restart it — update `roblox_server.lua` each session
