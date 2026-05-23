@@ -1,37 +1,40 @@
-// Paste your Teachable Machine shareable URL here:
 const MODEL_URL = "https://teachablemachine.withgoogle.com/models/hcP3FBOLH/";
-
-let model, video;
-let frameId = 0;
+let model, webcam, frameId = 0;
 
 async function init() {
   setStatus("loading model…");
   model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
 
-  video = document.getElementById("cam");
-  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-  video.srcObject = stream;
-  await new Promise((r) => (video.onloadedmetadata = r));
+  webcam = new tmImage.Webcam(300, 300, true);
+  await webcam.setup();
+  await webcam.play();
+  document.getElementById("webcam-container").appendChild(webcam.canvas);
 
   setStatus("running ✅");
   loop();
 }
 
 async function loop() {
-  const predictions = await model.predict(video);
-  // pick the class with highest confidence
-  const best = predictions.reduce((a, b) => (a.probability > b.probability ? a : b));
+  webcam.update();
+  const predictions = await model.predict(webcam.canvas);
+  const best = predictions.reduce((a, b) => a.probability > b.probability ? a : b);
 
   document.getElementById("guess").textContent = best.className;
-  document.getElementById("conf").textContent = `confidence: ${(best.probability * 100).toFixed(0)}%`;
 
+  // update label display
+  const container = document.getElementById("label-container");
+  container.innerHTML = predictions.map(p =>
+    `<div>${p.className}: ${(p.probability * 100).toFixed(0)}%</div>`
+  ).join("");
+
+  // send to relay server
   await fetch("/classify", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: ++frameId, label: best.className, confidence: best.probability }),
   }).catch(() => {});
 
-  setTimeout(loop, 500);
+  window.requestAnimationFrame(loop);
 }
 
 function setStatus(msg) { document.getElementById("status").textContent = msg; }

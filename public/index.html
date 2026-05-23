@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Dog Trainer</title>
+<style>
+  body { background:#13151a; color:#e8e8ea; font-family:monospace; padding:24px; }
+  .guess { font-size:28px; margin:12px 0; }
+  .status { color:#6f7686; }
+</style>
+</head>
+<body>
+  <h2>Dog Trainer — Vision Console</h2>
+  <div id="webcam-container"></div>
+  <div class="guess">Guess: <span id="guess">—</span></div>
+  <div id="label-container"></div>
+  <div class="status" id="status">loading model…</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
