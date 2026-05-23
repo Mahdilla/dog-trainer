@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dog Trainer — Vision Console</title>
+<style>
+  body { background:#13151a; color:#e8e8ea; font-family:ui-monospace,Menlo,Consolas,monospace;
+         margin:0; padding:24px; }
+  h1 { font-size:16px; letter-spacing:.5px; margin:0 0 16px; color:#9fd3ff; }
+  .row { display:flex; gap:24px; flex-wrap:wrap; }
+  video { width:360px; border-radius:8px; background:#000; transform:scaleX(-1); }
+  .panel { min-width:280px; }
+  button { font:inherit; background:#2a2f3a; color:#e8e8ea; border:1px solid #3d4350;
+           border-radius:6px; padding:10px 14px; cursor:pointer; margin:4px 4px 4px 0; }
+  button:hover { background:#343b48; }
+  .guess { font-size:28px; margin:12px 0; }
+  .conf { color:#8a8f9c; font-size:14px; }
+  .count { color:#9fd3ff; }
+  #log { background:#0e1014; border-radius:6px; padding:10px; height:160px;
+         overflow:auto; font-size:12px; color:#9aa0ad; margin-top:12px; }
+  .status { font-size:12px; color:#6f7686; margin-top:8px; }
+</style>
+</head>
+<body>
+  <h1>DOG TRAINER — VISION CONSOLE (keep this running, hidden from the kids)</h1>
+  <div class="row">
+    <video id="cam" autoplay playsinline muted></video>
+    <div class="panel">
+      <div>1. Seed the puppy — hold each gesture, click a few times:</div>
+      <button data-label="sit">☝️ Finger → SIT</button>
+      <button data-label="shake">✋ Palm → SHAKE</button>
+      <button data-label="jump">✊ Fist → JUMP</button>
+      <div class="conf">
+        examples — sit:<span class="count" id="c-sit">0</span>
+        shake:<span class="count" id="c-shake">0</span>
+        jump:<span class="count" id="c-jump">0</span>
+      </div>
+      <div class="guess">Guess: <span id="guess">—</span></div>
+      <div class="conf" id="conf"></div>
+      <div class="status" id="status">loading model…</div>
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+  <script src="app.js"></script>
+</body>
+</html>
