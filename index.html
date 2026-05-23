@@ -28,9 +28,6 @@
     <video id="cam" autoplay playsinline muted></video>
     <div class="panel">
       <div>1. Seed the puppy — hold each gesture, click a few times:</div>
-      <button data-label="sit">☝️ Finger → SIT</button>
-      <button data-label="shake">✋ Palm → SHAKE</button>
-      <button data-label="jump">✊ Fist → JUMP</button>
       <div class="conf">
         examples — sit:<span class="count" id="c-sit">0</span>
         shake:<span class="count" id="c-shake">0</span>
@@ -42,10 +39,7 @@
       <div id="log"></div>
     </div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
-  <script src="app.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script> 
+   <script src="app.js"></script>
 </body>
 </html>

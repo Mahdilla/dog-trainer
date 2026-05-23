@@ -12,7 +12,7 @@ local dogTrainerEvent = ReplicatedStorage:WaitForChild("DogTrainer")
 -- ───────────────────────────────────────────
 local dogModel = workspace:WaitForChild("Dog") -- match your model's name
 local animator = dogModel:WaitForChild("Humanoid"):WaitForChild("Animator")
-
+local BASE_URL = "https://literate-happiness-pjrx7pvx6pwp27wr9-3000.app.github.dev/" -- ← paste your ngrok URL
 local animationIds = {
     sit   = "rbxassetid://106724539355978",
     shake = "rbxassetid://118084110439183",
