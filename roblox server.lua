@@ -5,18 +5,25 @@
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local BASE_URL = "https://YOUR-NGROK-URL.ngrok-free.app" -- ← paste your ngrok URL
 local CONFIDENCE_THRESHOLD = 0.6
 
 local dogTrainerEvent = ReplicatedStorage:WaitForChild("DogTrainer")
 
 -- ───────────────────────────────────────────
--- TODO: replace with your actual dog model / animations
+local dogModel = workspace:WaitForChild("Dog") -- match your model's name
+local animator = dogModel:WaitForChild("Humanoid"):WaitForChild("Animator")
+
+local animationIds = {
+    sit   = "rbxassetid://106724539355978",
+    shake = "rbxassetid://118084110439183",
+    jump  = "rbxassetid://114339697984143",
+}
+
 local function playTrick(trick)
-	print("[DOG] performing:", trick)
-	-- e.g.
-	-- local anim = dogModel.Humanoid.Animator:LoadAnimation(animations[trick])
-	-- anim:Play()
+    local anim = Instance.new("Animation")
+    anim.AnimationId = animationIds[trick]
+    local track = animator:LoadAnimation(anim)
+    track:Play()
 end
 -- ───────────────────────────────────────────
 
